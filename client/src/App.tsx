@@ -1,6 +1,6 @@
 import React from 'react';
 import Browser from './components/Browser';
-import './App.css';
+import './index.css';
 
 const App: React.FC = () => {
   return (
