@@ -49,7 +49,6 @@ const Browser: React.FC = () => {
 
     return (
         <div className="flex flex-row w-full">
-            {/* Danh sách URL */}
             <div className="w-1/5 p-4 border-r border-gray-300 overflow-y-auto">
                 <form onSubmit={handleSubmit}>
                     <h1 className="text-2xl font-bold">Simple Web Browser</h1>
@@ -58,25 +57,28 @@ const Browser: React.FC = () => {
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
                         placeholder="Enter URL"
-                        className="my-10 block text-lime-400  w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="my-10 block text-lime-400 w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
-                    <button 
-                        type="button" 
-                        onClick={fetchHtml} 
-                        className=" px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    <button
+                        type="button"
+                        onClick={fetchHtml}
+                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                     >
                         Fetch
                     </button>
                     {error && <p className="text-red-500">{error}</p>}
                 </form>
+
+                <div style={{ marginTop: '30px' }}></div>
                 <h2 className="text-xl font-bold">LIST URL</h2>
-                <ul className="flex flex-col flex-wrap list-none p-0 m-0">
+
+                <ul className="flex flex-col list-none p-0 m-0">
                     {urls.map((u, index) => (
                         <li key={index} className="mr-2 mb-2">
-                            <a 
-                                href={u} 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
+                            <a
+                                href={u}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="block whitespace-nowrap overflow-hidden text-ellipsis"
                                 style={{ maxWidth: '200px' }}
                             >
@@ -86,10 +88,10 @@ const Browser: React.FC = () => {
                     ))}
                 </ul>
             </div>
-    
+
             <div className="w-2/3 p-4">
-                    <div dangerouslySetInnerHTML={{ __html: htmlContent || '' }} />
-                
+                <div dangerouslySetInnerHTML={{ __html: htmlContent || '' }}>
+                </div>
             </div>
         </div>
     );

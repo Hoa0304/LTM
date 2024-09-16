@@ -37,6 +37,7 @@ public class BrowserController {
     private void saveUrlsToFile() {
         try {
             objectMapper.writeValue(new File(filePath), urls);
+            System.out.println("URLs saved to file successfully.");
         } catch (IOException e) {
             System.err.println("Error saving URLs to file: " + e.getMessage());
         }
@@ -63,7 +64,7 @@ public class BrowserController {
             return ResponseEntity.badRequest().body("error URL");
         }
         urls.add(urlRequest.getUrl());
-        saveUrlsToFile(); // Ghi danh sách vào file sau khi thêm
+        saveUrlsToFile();
         return ResponseEntity.ok("URL added successfully");
     }
 
