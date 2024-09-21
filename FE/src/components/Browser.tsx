@@ -5,11 +5,15 @@ const Browser: React.FC = () => {
     const [url, setUrl] = useState('');
     const [htmlContent, setHtmlContent] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [urls, setUrls] = useState([]);
+    const [urls, setUrls] = useState<string[]>([]);
 
     const fetchHtml = async () => {
         setError(null);
-        setHtmlContent(null);
+
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+            setError('Invalid URL: must start with http:// or https://');
+            return;
+        }
 
         try {
             const response = await axios.get(`http://localhost:8080/fetch?url=${encodeURIComponent(url)}`);
@@ -48,8 +52,8 @@ const Browser: React.FC = () => {
     }, []);
 
     return (
-        <div className="flex flex-row w-full">
-            <div className="w-1/5 p-4 border-r border-gray-300 overflow-y-auto">
+        <div className="flex flex-row w-full h-screen">
+            <div className="w-1/5 p-4 border-r border-gray-300 overflow-y-auto bg-black text-white h-full">
                 <form onSubmit={handleSubmit}>
                     <h1 className="text-2xl font-bold">Simple Web Browser</h1>
                     <input
@@ -57,15 +61,17 @@ const Browser: React.FC = () => {
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
                         placeholder="Enter URL"
-                        className="my-10 block text-lime-400 w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="my-10 block text-lime-400 w-full rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
-                    <button
-                        type="button"
-                        onClick={fetchHtml}
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                    >
-                        Fetch
-                    </button>
+                    <div className="flex justify-center">
+                        <button
+                            type="submit"
+                            onClick={fetchHtml}
+                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                        >
+                            Fetch
+                        </button>
+                    </div>
                     {error && <p className="text-red-500">{error}</p>}
                 </form>
 
@@ -89,8 +95,18 @@ const Browser: React.FC = () => {
                 </ul>
             </div>
 
-            <div className="w-2/3 p-4">
-                <div dangerouslySetInnerHTML={{ __html: htmlContent || '' }}>
+            <div className="w-4/5 p-4 h-full">
+                <div
+                    style={{ maxHeight: 'calc(100vh - 20px)', maxWidth: '100%', overflowX: 'auto' }}
+                >
+                    <style>
+                        {`
+                            .header {
+                                position: sticky !important;
+                            }
+                        `}
+                    </style>
+                    <div dangerouslySetInnerHTML={{ __html: htmlContent || '' }} />
                 </div>
             </div>
         </div>
